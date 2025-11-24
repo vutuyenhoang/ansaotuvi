@@ -3,69 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lá Số Tử Vi Online</title>
+  <title>Lá Số Tử Vi Online Miễn Phí</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background: #f4f4f4; }
-    h1 { text-align: center; color: #8B4513; }
-    form { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    label { display: block; margin: 15px 0 5px; font-weight: bold; }
-    input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-    button { margin-top: 20px; padding: 12px 30px; background: #8B4513; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
-    button:hover { background: #A0522D; }
-    #result { margin-top: 30px; background: white; padding: 20px; border-radius: 10px; }
-    .loading { text-align: center; font-style: italic; color: #666; }
-    a.share { color: #0066cc; }
+    body { font-family: "Segoe UI", Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin:0; padding:20px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    h1 { text-align: center; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .card { background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    label { display: block; margin: 15px 0 5px; font-weight: bold; color: #333; }
+    input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+    .row { display: flex; gap: 10px; }
+    button { margin-top: 25px; padding: 15px 40px; background: #9c27b0; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; width: 100%; }
+    button:hover { background: #7b1fa2; }
+    #result { margin-top: 30px; background: #f9f9f9; padding: 20px; border-radius: 10px; border: 1px solid #eee; }
+    .loading { text-align: center; color: #666; font-size: 18px; }
+    a.share { color: #9c27b0; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h1>Lập Lá Số Tử Vi Online</h1>
-  
-  <form id="tuviForm">
-    <label>Họ và tên (không bắt buộc)</label>
-    <input type="text" id="name" placeholder="Nguyễn Văn A"/>
+  <div class="container">
+    <h1>LẬP LÁ SỐ TỬ VI ONLINE</h1>
+    <div class="card">
+      <form id="tuviForm">
+        <label>Họ và tên (không bắt buộc)</label>
+        <input type="text" id="name" placeholder="Ví dụ: Nguyễn Văn A"/>
 
-    <label>Ngày sinh dương lịch</label>
-    <div style="display:flex; gap:10px;">
-      <input type="number" id="day" placeholder="Ngày" min="1" max="31" required/>
-      <input type="number" id="month" placeholder="Tháng" min="1" max="12" required/>
-      <input type="number" id="year" placeholder="Năm" min="1900" max="2100" required/>
+        <label>Ngày sinh dương lịch</label>
+        <div class="row">
+          <input type="number" id="day" placeholder="Ngày" min="1" max="31" required/>
+          <input type="number" id="month" placeholder="Tháng" min="1" max="12" required/>
+          <input type="number" id="year" placeholder="Năm" min="1900" max="2100" required/>
+        </div>
+
+        <label>Giờ sinh</label>
+        <div class="row">
+          <select id="hour" required><option value="">Giờ</option></select>
+          <select id="minute">
+            <option value="00">00 phút</option>
+            <option value="15">15 phút</option>
+            <option value="30">30 phút</option>
+            <option value="45">45 phút</option>
+          </select>
+        </div>
+
+        <label>Giới tính</label>
+        <select id="gender" required>
+          <option value="0">Nam</option>
+          <option value="1">Nữ</option>
+        </select>
+
+        <label>Năm xem vận hạn (mặc định năm nay)</label>
+        <input type="number" id="year_xem" value="2025"/>
+
+        <button type="submit">XEM LÁ SỐ TỬ VI NGAY</button>
+      </form>
+
+      <div id="result"></div>
     </div>
-
-    <label>Giờ sinh (giờ địa phương)</label>
-    <div style="display:flex; gap:10px;">
-      <select id="hour" required>
-        <option value="">Giờ</option>
-        <script>
-          for(let i=0;i<24;i++) document.write(`<option value="${i}">${i < 10 ? '0'+i : i} giờ</option>`);
-        </script>
-      </select>
-      <select id="minute">
-        <option value="00">00 phút</option>
-        <option value="15">15 phút</option>
-        <option value="30">30 phút</option>
-        <option value="45">45 phút</option>
-      </select>
-    </div>
-
-    <label>Giới tính</label>
-    <select id="gender" required>
-      <option value="0">Nam</option>
-      <option value="1">Nữ</option>
-    </select>
-
-    <label>Năm xem vận hạn (mặc định năm hiện tại)</label>
-    <input type="number" id="year_xem" value="2025"/>
-
-    <button type="submit">Xem Lá Số Tử Vi</button>
-  </form>
-
-  <div id="result"></div>
+  </div>
 
   <script>
+    // Tạo option giờ từ 0-23
+    const hourSelect = document.getElementById('hour');
+    for(let i = 0; i < 24; i++) {
+      const opt = document.createElement('option');
+      opt.value = i; opt.text = i + ' giờ';
+      hourSelect.add(opt);
+    }
+
     document.getElementById('tuviForm').onsubmit = async (e) => {
       e.preventDefault();
-      const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = '<p class="loading">Đang lập lá số, vui lòng đợi giây lát...</p>';
+      const result = document.getElementById('result');
+      result.innerHTML = '<p class="loading">Đang lập lá số, xin chờ 5-10 giây...</p>';
 
       const data = {
         name: document.getElementById('name').value,
@@ -75,21 +83,28 @@
         hour: document.getElementById('hour').value,
         minute: document.getElementById('minute').value,
         gender: document.getElementById('gender').value,
-        year_xem: document.getElementById('year_xem').value || new Date().getFullYear()
+        year_xem: document.getElementById('year_xem').value
       };
 
-      const res = await fetch('/api/tu-vi', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
-      });
+      try {
+        const res = await fetch('/api/tu-vi', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(data)
+        });
+        const json = await res.json();
 
-      const json = await res.json();
-      if (json.success) {
-        resultDiv.innerHTML = json.html + 
-          `<p><br><strong>Link chia sẻ:</strong> <a class="share" href="${json.url}" target="_blank">${json.url}</a></p>`;
-      } else {
-        resultDiv.innerHTML = `<p style="color:red">Lỗi: ${json.message}</p>`;
+        if (json.success) {
+          result.innerHTML = json.html + 
+            `<hr><p style="text-align:center">
+              <strong>Link chia sẻ:</strong><br>
+              <a class="share" href="${json.url}" target="_blank">${json.url}</a>
+            </p>`;
+        } else {
+          result.innerHTML = `<p style="color:red">Lỗi: ${json.message}</p>`;
+        }
+      } catch (err) {
+        result.innerHTML = '<p style="color:red">Lỗi kết nối. Vui lòng thử lại!</p>';
       }
     };
   </script>
